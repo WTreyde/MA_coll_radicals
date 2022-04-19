@@ -11,7 +11,6 @@ from kgcnn.utils.data import ragged_tensor_from_nested_numpy
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 import tensorflow as tf
-from kgcnn.utils.adj import coordinates_to_distancematrix, define_adjacency_from_distance, sort_edge_indices
 from kgcnn.layers.conv.painn_conv import PAiNNUpdate, EquivariantInitialize
 from kgcnn.layers.conv.painn_conv import PAiNNconv
 from kgcnn.layers.geom import NodeDistanceEuclidean, BesselBasisLayer, EdgeDirectionNormalized, CosCutOffEnvelope, NodePosition
@@ -125,6 +124,7 @@ def add_ref_idx(row):
     return {'ref': ref_pdb, 'ref_idx': idx}
 
 ### Training and evaluating final model
+
 def K_fold_cross_validation(
   inputs, targets, num_folds, model, no_data_points=6150, loss='mae', batch_size = 32, no_epochs = 100, verbose = 1,
   callbacks=tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=20)
@@ -253,8 +253,8 @@ def painn(inputs=[{"shape": (None,), "name": "node_attributes", "dtype": "float3
                bessel_basis={"num_radial": 20, "cutoff": 5.0, "envelope_exponent": 5},
                depth=2,
                pooling_args={"pooling_method": "sum"},
-               conv_args=None,
-               update_args=None,
+               conv_args={"units": 128, "cutoff": None, "conv_pool": "sum"},
+               update_args={"units": 128},
                output_mlp={"use_bias": [True, True, True, True, True],
                                 "units": [512, 256, 128, 64, 1], "activation": ["swish", "swish", "swish", "swish", "linear"]}
                ):
