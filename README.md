@@ -3,3 +3,4 @@ Code from my internship in the Molecular Biomechanics (MBM) group at the Heidelb
 
 * 'barrier_prediction.ipynb': Notebook to prepare the data for and train the final machine learning model.
 * 'readout': Scripts to read out Gaussian calculations and compute descriptors.
+* 'other': Notebooks to prepare the data for and train other machine learning models (neural networks, graph neural networks other than the final PaiNN model).
